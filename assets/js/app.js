@@ -50,14 +50,24 @@
   }
 
   // ---------------- Render Products ----------------
+  function refreshProductsFromStorage() {
+    if (typeof getVarshaProducts === 'function') {
+      VARSHA_PRODUCTS = getVarshaProducts();
+    }
+  }
+
   function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.setAttribute('data-id', product.id);
 
-    const badgeHtml = product.badge
-      ? `<span class="card-badge">${product.badge}</span>`
-      : '';
+    const isOutOfStock = product.status === 'Out of Stock';
+    let badgeHtml = '';
+    if (isOutOfStock) {
+      badgeHtml = `<span class="card-badge" style="background-color: #7A271A; color: #FFF;">Out of Stock</span>`;
+    } else if (product.badge) {
+      badgeHtml = `<span class="card-badge">${product.badge}</span>`;
+    }
 
     card.innerHTML = `
       <div class="card-media" onclick="window.VF.openModal('${product.id}')">
@@ -70,14 +80,17 @@
         </div>
       </div>
       <div class="card-content">
-        <span class="card-category">${product.category}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <span class="card-category">${product.category}</span>
+          ${product.status && product.status !== 'In Stock' ? `<span style="font-size: 0.72rem; color: #B45309; font-weight: 500;">${product.status}</span>` : ''}
+        </div>
         <h4 class="card-title" onclick="window.VF.openModal('${product.id}')">${product.title}</h4>
         <div class="card-footer">
           <div class="price-wrap">
             <span class="card-price">${formatINR(product.price)}</span>
             ${product.originalPrice ? `<span class="card-price-original">${formatINR(product.originalPrice)}</span>` : ''}
           </div>
-          <button class="btn-card-add" type="button" title="Add to Cart" onclick="event.stopPropagation(); window.VF.addToCart('${product.id}', 1)">
+          <button class="btn-card-add" type="button" title="${isOutOfStock ? 'Currently Out of Stock' : 'Add to Cart'}" ${isOutOfStock ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''} onclick="event.stopPropagation(); ${isOutOfStock ? `window.VF.showToast('Item is out of stock. Contact workshop for custom order.');` : `window.VF.addToCart('${product.id}', 1)`}">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -90,7 +103,33 @@
     return card;
   }
 
+  function renderCategoryTabs() {
+    const tabsContainer = document.querySelector('.category-tabs-wrap');
+    if (!tabsContainer) return;
+
+    refreshProductsFromStorage();
+    const categories = ['All', ...new Set(VARSHA_PRODUCTS.map(p => p.category).filter(Boolean))];
+
+    tabsContainer.innerHTML = '';
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = `category-tab ${state.activeCategory === cat ? 'active' : ''}`;
+      btn.setAttribute('data-cat', cat);
+      if (cat === 'All') {
+        btn.textContent = `All Items (${VARSHA_PRODUCTS.length})`;
+      } else {
+        const count = VARSHA_PRODUCTS.filter(p => p.category === cat).length;
+        btn.textContent = `${cat} (${count})`;
+      }
+      btn.addEventListener('click', () => {
+        filterCategory(cat);
+      });
+      tabsContainer.appendChild(btn);
+    });
+  }
+
   function renderCatalog() {
+    refreshProductsFromStorage();
     if (!elements.productsGrid) return;
     elements.productsGrid.innerHTML = '';
 
@@ -104,15 +143,16 @@
       const q = state.searchQuery.toLowerCase().trim();
       filtered = filtered.filter(p =>
         p.title.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
-        p.desc.toLowerCase().includes(q)
+        (p.category && p.category.toLowerCase().includes(q)) ||
+        (p.desc && p.desc.toLowerCase().includes(q)) ||
+        (p.id && p.id.toLowerCase().includes(q))
       );
     }
 
     if (filtered.length === 0) {
       elements.productsGrid.innerHTML = `
         <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--color-text-muted);">
-          <p style="font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: 8px;">No furniture found in this category.</p>
+          <p style="font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: 8px;">No furniture found matching your criteria.</p>
           <button class="btn-secondary" style="margin-top: 12px;" onclick="window.VF.filterCategory('All')">View All Collections</button>
         </div>
       `;
@@ -125,11 +165,14 @@
   }
 
   function renderFeaturedHome() {
+    refreshProductsFromStorage();
     if (!elements.featuredGrid) return;
     elements.featuredGrid.innerHTML = '';
     // Showcase top 8 bestsellers / signature pieces
     const featured = VARSHA_PRODUCTS.filter(p => p.badge && p.badge !== '').slice(0, 8);
-    featured.forEach(prod => {
+    // If fewer than 8 with badges, fill with first products
+    const list = featured.length >= 4 ? featured : VARSHA_PRODUCTS.slice(0, 8);
+    list.forEach(prod => {
       elements.featuredGrid.appendChild(createProductCard(prod));
     });
   }
@@ -379,11 +422,23 @@
   // ---------------- Event Listeners & Initialization ----------------
   document.addEventListener('DOMContentLoaded', () => {
     // Render initial views
+    refreshProductsFromStorage();
     renderFeaturedHome();
+    renderCategoryTabs();
     renderCatalog();
     updateCartUI();
     initFAQs();
     initCookieBanner();
+
+    // Listen for storage changes from admin dashboard tab
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'varsha_furniture_catalog') {
+        refreshProductsFromStorage();
+        renderFeaturedHome();
+        renderCategoryTabs();
+        renderCatalog();
+      }
+    });
 
     // Check initial route
     const initialRoute = window.location.hash || '#home';

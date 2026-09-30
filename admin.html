@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Store Manager &bull; Varsha Furniture Admin</title>
+  <meta name="description" content="Beginner-friendly admin dashboard for Varsha Furniture catalog and shop management.">
+
+  <!-- Brand Typography: Libre Baskerville (Headings) & Montserrat (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+
+  <!-- Core Theme Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Dedicated Admin Dashboard Stylesheet -->
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- ======================================================================
+       MOBILE TOP NAVIGATION BAR (Visible on smaller screens)
+       ====================================================================== -->
+  <header class="admin-mobile-header">
+    <div class="mobile-header-left">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" type="button" aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="admin.html" class="mobile-brand">
+        <span class="mobile-brand-title">VARSHA</span>
+        <span class="mobile-brand-badge">Admin</span>
+      </a>
+    </div>
+    <div class="mobile-header-right">
+      <button class="btn-bronze mobile-header-add-btn btn-trigger-add-product" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>Add</span>
+      </button>
+      <a href="index.html" class="mobile-header-store-btn" title="View Public Storefront">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Mobile Sidebar Backdrop -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <!-- ======================================================================
+       MAIN DASHBOARD LAYOUT (Sidebar + Main Workspace)
+       ====================================================================== -->
+  <div class="admin-layout">
+
+    <!-- ----------------- SIDEBAR (Exact 11 Items matching user's design) ----------------- -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <!-- Brand & Workshop Header -->
+      <div class="sidebar-brand-block">
+        <a href="admin.html" class="sidebar-logo">VARSHA FURNITURE</a>
+        <span class="sidebar-logo-subtitle">Workshop Admin Portal</span>
+        <div class="sidebar-workshop-pill">
+          <span class="pulse-dot"></span>
+          <span>Singarwa Hub &bull; Ahmedabad</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Navigation</div>
+        <ul class="sidebar-menu">
+          <!-- 1. Dashboard -->
+          <li>
+            <button class="sidebar-btn active" type="button" data-view="dashboard">
+              <span class="sidebar-btn-content">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Dashboard</span>
+              </span>
+            </button>
+          </li>
+
+          <!-- 2. Products -->
+          <li>
+            <button class="sidebar-btn" type="button" data-view="products">
+              <span class="sidebar-btn-content">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                <span>Products</span>
+              </span>
+              <span class="sidebar-badge" id="sidebar-count-products">36</span>
+            </button>
+          </li>
+
+          <!-- 3. Categories -->
+          <li>
+            <button class="sidebar-btn" type="button" data-view="categories">
+              <span class="sidebar-btn-content">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                <span>Categories</span>
+              </span>
+            </button>
+          </li>
+
+          <!-- 4. Orders -->
+          <li>
+            <button class="sidebar-btn" type="button" data-view="orders">
+              <span class="sidebar-btn-content">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span>Orders</span>
+              </span>
+              <span class="sidebar-badge" id="sidebar-count-orders">5</span>
+            </button>
+          </li>
+
+          <!-- 5. Customers -->
+          <li>
+            <button class="sidebar-btn" type="button" data-view="customers">
+              <span class="sidebar-btn-content">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Customers</span>
+              </span>
+            </button>
+          </li>
+
+          <!-- 6. Coupons -->
+          <li>
+            <button class="sidebar-btn" type="button" data-view="coupons">
+              <span class="sidebar-btn-content">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                <span>Coupons</span>
+              </span>
+              <span class="sidebar-badge" id="sidebar-count-coupons">3</span>
+            </button>
+          </li>
+
+          <!-- 7. Media -->
+          <li>
+            <button class="sidebar-btn" type="button" data-view="media">
+              <span class="sidebar-btn-content">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <span>Media</span>
+              </span>
+            </button>
+          </li>
+
+          <!-- 8. Analytics -->
+          <li>
+            <button class="sidebar-btn" type="button" data-view="analytics">
+              <span class="sidebar-btn-content">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                <span>Analytics</span>
+              </span>
+            </button>
+          </li>
+
+          <!-- 9. Reviews -->
+          <li>
+            <button class="sidebar-btn" type="button" data-view="reviews">
+              <span class="sidebar-btn-content">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <span>Reviews</span>
+              </span>
+              <span class="sidebar-badge" id="sidebar-count-reviews">4</span>
+            </button>
+          </li>
+
+          <!-- 10. SEO -->
+          <li>
+            <button class="sidebar-btn" type="button" data-view="seo">
+              <span class="sidebar-btn-content">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>SEO</span>
+              </span>
+            </button>
+          </li>
+
+          <!-- 11. Settings -->
+          <li>
+            <button class="sidebar-btn" type="button" data-view="settings">
+              <span class="sidebar-btn-content">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span>Settings</span>
+              </span>
+            </button>
+          </li>
+        </ul>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="nav-section-title">Public Storefront</div>
+        <div style="padding: 0 4px; margin-bottom: 14px;">
+          <a href="index.html" class="sidebar-storefront-btn" title="Open Public Website">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              <span>View Public Store</span>
+            </span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+
+        <!-- Storage Status Box -->
+        <div class="sidebar-storage-card">
+          <div class="storage-status-header">
+            <span class="status-indicator"></span>
+            <span>Saved in this Browser</span>
+          </div>
+          <p class="storage-text">
+            All edits and new products are saved immediately on this computer and active on your storefront.
+          </p>
+          <div class="storage-actions">
+            <button class="storage-link-btn btn-trigger-export" type="button">
+              &#10515; Download Catalog (products.js)
+            </button>
+            <button class="storage-link-btn btn-trigger-factory-reset" type="button" style="color: var(--admin-text-light);">
+              &#8634; Restore Factory Catalog
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div><strong>Varsha Furniture</strong> &bull; Estd. 2026</div>
+        <div style="margin-top: 2px;">Workshop: 86906 50459</div>
+      </div>
+    </aside>
+
+    <!-- ----------------- MAIN CONTENT AREA ----------------- -->
+    <main class="admin-main">
+
+      <!-- Sticky Topbar -->
+      <div class="admin-topbar">
+        <div class="topbar-breadcrumbs">
+          <span>Admin Portal</span>
+          <span>&rsaquo;</span>
+          <span class="topbar-page-title" id="topbar-page-title">Store Dashboard</span>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn-bronze btn-trigger-add-product" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add a Product
+          </button>
+          <a href="index.html" class="btn-outline-neutral" target="_blank" rel="noopener" title="Open Storefront in New Tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <span>Live Store</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Workspace Content -->
+      <div class="admin-content">
+
+        <!-- ================================================================
+             1. DASHBOARD VIEW
+             ================================================================ -->
+        <section class="admin-view active" id="view-dashboard" data-view="dashboard">
+          <!-- Welcome Banner -->
+          <div class="overview-welcome-card">
+            <div class="welcome-text-block">
+              <h1>Varsha Furniture Store Manager</h1>
+              <p>
+                Welcome to your shop management center. Here you can easily manage products, orders, categories, customer inquiries, discounts, and website settings with zero coding required.
+              </p>
+            </div>
+            <div class="welcome-actions-group">
+              <button class="btn-bronze btn-trigger-add-product" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add a Product
+              </button>
+              <button class="btn-bronze-outline" type="button" onclick="window.VF_ADMIN.switchView('orders')">
+                View Orders &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Key Metrics Cards -->
+          <div class="stat-cards-grid">
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">Total Revenue</span>
+                <div class="stat-card-icon" style="color: var(--admin-success); background: var(--admin-success-bg);">
+                  ₹
+                </div>
+              </div>
+              <div class="stat-card-value" id="stat-dashboard-revenue">₹1,58,200</div>
+              <div class="stat-card-desc">From confirmed workshop orders</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">Workshop Orders</span>
+                <div class="stat-card-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </div>
+              </div>
+              <div class="stat-card-value" id="stat-dashboard-orders">5</div>
+              <div class="stat-card-desc">Active customer inquiries &amp; orders</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">Total Products</span>
+                <div class="stat-card-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                </div>
+              </div>
+              <div class="stat-card-value" id="stat-total-products">36</div>
+              <div class="stat-card-desc">Active designs in catalog</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">In Stock Items</span>
+                <div class="stat-card-icon" style="color: var(--admin-bronze); background: var(--admin-bronze-light);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+              <div class="stat-card-value" id="stat-in-stock">36</div>
+              <div class="stat-card-desc">Available for dispatch</div>
+            </div>
+          </div>
+
+          <!-- Two-Column Section: Category Distribution & Recent Orders -->
+          <div class="overview-sections-grid">
+            <div class="admin-card">
+              <div class="card-title-row">
+                <div>
+                  <h2>Recent Workshop Orders</h2>
+                  <div class="card-subtitle">Latest inquiries and orders from Ahmedabad and pan-India</div>
+                </div>
+                <button class="btn-bronze-outline" type="button" onclick="window.VF_ADMIN.switchView('orders')">
+                  View All &rarr;
+                </button>
+              </div>
+              <div id="dashboard-recent-orders-list" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Dynamically populated via admin.js -->
+              </div>
+            </div>
+
+            <div class="admin-card">
+              <div class="card-title-row">
+                <div>
+                  <h2>Products by Category</h2>
+                  <div class="card-subtitle">Distribution across workshop collections</div>
+                </div>
+                <button class="btn-bronze-outline" type="button" onclick="window.VF_ADMIN.switchView('categories')">
+                  Manage &rarr;
+                </button>
+              </div>
+              <div class="category-bars-list" id="overview-category-list">
+                <!-- Dynamically populated via admin.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Catalog Health Checklist -->
+          <div class="admin-card" style="margin-bottom: 28px;">
+            <div class="card-title-row">
+              <div>
+                <h2>Catalog Health &amp; Improvement Tips</h2>
+                <div class="card-subtitle">Suggestions to optimize customer engagement on your store</div>
+              </div>
+            </div>
+            <div class="health-items-list" id="overview-health-list">
+              <!-- Dynamically populated via admin.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             2. PRODUCTS VIEW
+             ================================================================ -->
+        <section class="admin-view" id="view-products" data-view="products">
+          <div class="products-header-bar">
+            <div class="products-title-block">
+              <h1>All Products</h1>
+              <p>Search, update pricing, change availability, or edit details for all furniture pieces.</p>
+            </div>
+            <button class="btn-bronze btn-trigger-add-product" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add a Product
+            </button>
+          </div>
+
+          <!-- Filters Toolbar -->
+          <div class="admin-filters-card">
+            <div class="filters-row">
+              <div class="search-input-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="admin-search-input" id="admin-search-input" placeholder="Search by product name, ID (e.g. vf-01), or description...">
+              </div>
+
+              <div class="filter-select-wrap">
+                <select class="admin-select" id="filter-category-select">
+                  <option value="All">All Categories (36)</option>
+                </select>
+              </div>
+
+              <div class="filter-select-wrap">
+                <select class="admin-select" id="filter-status-select">
+                  <option value="All">All Availability</option>
+                  <option value="In Stock">In Stock (Available)</option>
+                  <option value="Made to Order">Made to Order</option>
+                  <option value="Out of Stock">Out of Stock</option>
+                </select>
+              </div>
+
+              <div class="filter-select-wrap">
+                <select class="admin-select" id="filter-sort-select">
+                  <option value="default">Default Order</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="name-asc">Name: A to Z</option>
+                  <option value="name-desc">Name: Z to A</option>
+                  <option value="newest">Newest Added First</option>
+                </select>
+              </div>
+
+              <div class="view-switch-group">
+                <button class="view-btn active" id="btn-view-table" type="button" title="Table View">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                </button>
+                <button class="view-btn" id="btn-view-grid" type="button" title="Card Grid View">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="filter-summary-strip">
+              <span id="products-summary-count">Showing 36 of 36 products</span>
+              <button class="clear-filters-btn" id="btn-clear-filters" type="button" style="display: none;">
+                Clear all filters
+              </button>
+            </div>
+          </div>
+
+          <!-- Table View -->
+          <div class="table-container" id="products-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th style="width: 70px;">Photo</th>
+                  <th>Product Name &amp; ID</th>
+                  <th>Category</th>
+                  <th>Selling Price</th>
+                  <th>Original Price</th>
+                  <th>Badge</th>
+                  <th>Availability</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-body">
+                <!-- Populated via admin.js -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Grid View -->
+          <div class="products-cards-grid" id="products-grid-container" style="display: none;">
+            <!-- Populated via admin.js -->
+          </div>
+
+          <!-- Empty State -->
+          <div class="admin-empty-state" id="products-empty-state" style="display: none;">
+            <div class="empty-state-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
+            <h3 class="empty-state-title">No products match your search</h3>
+            <p class="empty-state-text">
+              Try changing your search terms or clearing your category and availability filters.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             3. CATEGORIES VIEW
+             ================================================================ -->
+        <section class="admin-view" id="view-categories" data-view="categories">
+          <div class="products-header-bar">
+            <div class="products-title-block">
+              <h1>Furniture Categories</h1>
+              <p>Manage furniture collections, product groupings, and showroom displays.</p>
+            </div>
+            <button class="btn-bronze btn-trigger-add-product" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              + Add New Collection
+            </button>
+          </div>
+
+          <div class="categories-cards-grid" id="categories-grid-container">
+            <!-- Dynamically populated via admin.js -->
+          </div>
+        </section>
+
+        <!-- ================================================================
+             4. ORDERS VIEW
+             ================================================================ -->
+        <section class="admin-view" id="view-orders" data-view="orders">
+          <div class="products-header-bar">
+            <div class="products-title-block">
+              <h1>Workshop Orders &amp; Inquiries</h1>
+              <p>Track retail orders, corporate workstation batches, and dispatch status.</p>
+            </div>
+          </div>
+
+          <!-- Filters Strip for Orders -->
+          <div class="admin-filters-card">
+            <div class="filters-row">
+              <div class="search-input-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="admin-search-input" id="orders-search-input" placeholder="Search by customer name, order ID, city, or items...">
+              </div>
+
+              <div class="filter-select-wrap">
+                <select class="admin-select" id="orders-filter-status">
+                  <option value="All">All Statuses</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Pending Dispatch">Pending Dispatch</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+            </div>
+            <div class="filter-summary-strip">
+              <span id="orders-summary-count">Showing 5 of 5 orders</span>
+            </div>
+          </div>
+
+          <div class="table-container" id="orders-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer &amp; City</th>
+                  <th>Items Ordered</th>
+                  <th>Total Amount</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Update Status</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body">
+                <!-- Dynamically populated via admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             5. CUSTOMERS VIEW
+             ================================================================ -->
+        <section class="admin-view" id="view-customers" data-view="customers">
+          <div class="products-header-bar">
+            <div class="products-title-block">
+              <h1>Customer Directory</h1>
+              <p>Clients and companies purchasing directly from Varsha Furniture workshop.</p>
+            </div>
+          </div>
+
+          <div class="customer-card-grid" id="customers-grid-container">
+            <!-- Dynamically populated via admin.js -->
+          </div>
+        </section>
+
+        <!-- ================================================================
+             6. COUPONS VIEW
+             ================================================================ -->
+        <section class="admin-view" id="view-coupons" data-view="coupons">
+          <div class="products-header-bar">
+            <div class="products-title-block">
+              <h1>Discount Coupons &amp; Vouchers</h1>
+              <p>Manage seasonal promotional codes, wholesale discounts, and special offers.</p>
+            </div>
+            <button class="btn-bronze" id="btn-open-coupon-modal" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add Coupons
+            </button>
+          </div>
+
+          <div class="coupons-grid" id="coupons-grid-container">
+            <!-- Dynamically populated via admin.js -->
+          </div>
+        </section>
+
+        <!-- ================================================================
+             7. MEDIA VIEW
+             ================================================================ -->
+        <section class="admin-view" id="view-media" data-view="media">
+          <div class="products-header-bar">
+            <div class="products-title-block">
+              <h1>Media Asset Library</h1>
+              <p>All 36 authentic workshop catalog photos stored in <code>assets/images/catalog/</code>.</p>
+            </div>
+            <button class="btn-bronze btn-trigger-add-product" type="button">
+              Upload New Photo
+            </button>
+          </div>
+
+          <div class="media-grid" id="media-grid-container">
+            <!-- Dynamically populated via admin.js -->
+          </div>
+        </section>
+
+        <!-- ================================================================
+             8. ANALYTICS VIEW
+             ================================================================ -->
+        <section class="admin-view" id="view-analytics" data-view="analytics">
+          <div class="products-header-bar">
+            <div class="products-title-block">
+              <h1>Sales &amp; Store Analytics</h1>
+              <p>Revenue insights, popular models, and workshop fulfillment metrics.</p>
+            </div>
+          </div>
+
+          <div class="analytics-hero-grid">
+            <div class="stat-card">
+              <div class="stat-card-label">Total Revenue</div>
+              <div class="stat-card-value" id="analytics-total-sales" style="color: var(--admin-success); margin-top: 8px;">₹1,58,200</div>
+              <div class="stat-card-desc">Workshop sales volume</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-label">Completed Orders</div>
+              <div class="stat-card-value" id="analytics-total-orders" style="margin-top: 8px;">5</div>
+              <div class="stat-card-desc">Direct workshop orders</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-label">Avg. Order Value</div>
+              <div class="stat-card-value" id="analytics-aov" style="color: var(--admin-bronze-dark); margin-top: 8px;">₹31,640</div>
+              <div class="stat-card-desc">Per customer order</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-label">Furniture Units Sold</div>
+              <div class="stat-card-value" id="analytics-units-sold" style="margin-top: 8px;">14</div>
+              <div class="stat-card-desc">Chairs &amp; Dining Suites</div>
+            </div>
+          </div>
+
+          <!-- Monthly Sales Chart Simulation -->
+          <div class="analytics-chart-card">
+            <div class="card-title-row">
+              <div>
+                <h2>Monthly Workshop Sales Volume</h2>
+                <div class="card-subtitle">Order volume across recent manufacturing cycles</div>
+              </div>
+            </div>
+            <div class="simple-bar-chart">
+              <div class="bar-col">
+                <div class="bar-pill" style="height: 45%;">
+                  <span class="bar-pill-val">₹68,000</span>
+                </div>
+                <span class="bar-col-label">May</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar-pill" style="height: 60%;">
+                  <span class="bar-pill-val">₹95,000</span>
+                </div>
+                <span class="bar-col-label">Jun</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar-pill" style="height: 52%;">
+                  <span class="bar-pill-val">₹82,000</span>
+                </div>
+                <span class="bar-col-label">Jul</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar-pill" style="height: 75%;">
+                  <span class="bar-pill-val">₹1,24,000</span>
+                </div>
+                <span class="bar-col-label">Aug</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar-pill" style="height: 95%;">
+                  <span class="bar-pill-val">₹1,58,200</span>
+                </div>
+                <span class="bar-col-label">Sep (Current)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Selling Products -->
+          <div class="admin-card">
+            <div class="card-title-row">
+              <div>
+                <h2>Top-Performing Furniture Designs</h2>
+                <div class="card-subtitle">Highest interest pieces based on inquiries and orders</div>
+              </div>
+            </div>
+            <div id="analytics-top-products" style="display: flex; flex-direction: column; gap: 10px;">
+              <!-- Dynamically populated via admin.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             9. REVIEWS VIEW
+             ================================================================ -->
+        <section class="admin-view" id="view-reviews" data-view="reviews">
+          <div class="products-header-bar">
+            <div class="products-title-block">
+              <h1>Customer Testimonials &amp; Reviews</h1>
+              <p>Ratings from homeowners, architects, and corporate clients in Gujarat.</p>
+            </div>
+            <button class="btn-bronze" id="btn-open-review-modal" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add a Review
+            </button>
+          </div>
+
+          <div class="reviews-grid" id="reviews-grid-container">
+            <!-- Dynamically populated via admin.js -->
+          </div>
+        </section>
+
+        <!-- ================================================================
+             10. SEO VIEW
+             ================================================================ -->
+        <section class="admin-view" id="view-seo" data-view="seo">
+          <div class="products-header-bar">
+            <div class="products-title-block">
+              <h1>Search Engine Optimization (SEO)</h1>
+              <p>Manage how Varsha Furniture appears when customers search on Google.</p>
+            </div>
+          </div>
+
+          <div class="admin-card" style="margin-bottom: 24px;">
+            <div class="card-title-row">
+              <div>
+                <h2>Google Search Result Preview</h2>
+                <div class="card-subtitle">This is how your store appears on Google Search</div>
+              </div>
+            </div>
+
+            <div class="seo-preview-box">
+              <div class="seo-preview-url">https://varshafurniture.com/</div>
+              <div class="seo-preview-title" id="seo-preview-title">Varsha Furniture | Handcrafted Luxury &amp; Executive Seating Ahmedabad</div>
+              <div class="seo-preview-desc" id="seo-preview-desc">Varsha Furniture Ahmedabad - Premium Handcrafted Dining Chairs, Composite Marble Dining Suites, and Executive Ergonomic Seating directly from our workshop.</div>
+            </div>
+
+            <div class="form-grid" style="margin-top: 24px;">
+              <div class="form-group">
+                <label class="form-label" for="seo-input-title">Website Title (SEO Page Title)</label>
+                <input type="text" class="form-control" id="seo-input-title">
+                <span class="form-hint">Optimal length: 50&ndash;60 characters. Include brand name and city.</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="seo-input-desc">Meta Description</label>
+                <textarea class="form-control" id="seo-input-desc" rows="3"></textarea>
+                <span class="form-hint">Optimal length: 140&ndash;160 characters describing your workshop offerings.</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="seo-input-keywords">Target Keywords</label>
+                <input type="text" class="form-control" id="seo-input-keywords">
+                <span class="form-hint">Separate keywords with commas (e.g., dining chairs ahmedabad, marble dining set, executive office chair).</span>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                <button class="btn-bronze" id="btn-save-seo" type="button">
+                  Save SEO Settings
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             11. SETTINGS VIEW
+             ================================================================ -->
+        <section class="admin-view" id="view-settings" data-view="settings">
+          <div class="products-header-bar">
+            <div class="products-title-block">
+              <h1>Store &amp; Workshop Settings</h1>
+              <p>Configure business address, phone, WhatsApp ordering, and catalog backups.</p>
+            </div>
+          </div>
+
+          <div class="admin-card" style="margin-bottom: 24px;">
+            <div class="card-title-row">
+              <div>
+                <h2>Workshop Business Profile</h2>
+                <div class="card-subtitle">Official details displayed across invoices and contact forms</div>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="settings-store-name">Business Name</label>
+                  <input type="text" class="form-control" id="settings-store-name" value="Varsha Furniture">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="settings-phone">Workshop Contact Phone</label>
+                  <input type="text" class="form-control" id="settings-phone" value="+91 86906 50459">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settings-workshop-address">Physical Workshop Address</label>
+                <input type="text" class="form-control" id="settings-workshop-address" value="Shop No 41, Shraddha industrial hub, 43, Indore - Ahmedabad Hwy, Singarwa, Ahmedabad, Gujarat 382430">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settings-email">Support Email</label>
+                <input type="email" class="form-control" id="settings-email" value="contact@varshafurniture.com">
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                <button class="btn-bronze" id="btn-save-settings" type="button">
+                  Save Workshop Profile
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Catalog Backup Card -->
+          <div class="admin-card">
+            <div class="card-title-row">
+              <div>
+                <h2>Catalog Backup &amp; Live Site Publishing</h2>
+                <div class="card-subtitle">Permanently sync your catalog to the live website files</div>
+              </div>
+            </div>
+            <p style="font-size: 0.86rem; color: var(--admin-text-muted); margin-bottom: 16px;">
+              Download your full 36+ product catalog as a <code>products.js</code> file to deploy to your web server, or download a JSON backup for safe keeping.
+            </p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <button class="btn-bronze btn-trigger-export" type="button">
+                Download products.js File
+              </button>
+              <button class="btn-outline-neutral btn-trigger-factory-reset" type="button" style="color: var(--admin-danger);">
+                Restore Factory Defaults
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 1: ADD / EDIT PRODUCT FORM
+       ====================================================================== -->
+  <div class="admin-modal-overlay" id="modal-product-form">
+    <div class="admin-modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-block">
+          <h2 id="modal-product-title">Add a New Product</h2>
+          <p id="modal-product-sub">Fill in the product details below. Required fields are marked with (*).</p>
+        </div>
+        <button class="modal-close-btn" id="btn-close-product-modal" type="button" aria-label="Close dialog">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form class="form-grid" id="form-product" onsubmit="event.preventDefault();">
+          <input type="hidden" id="form-product-id" value="">
+
+          <div class="form-group">
+            <label class="form-label" for="form-product-name">
+              Product Name / Title <span class="req-star">*</span>
+            </label>
+            <input type="text" class="form-control" id="form-product-name" placeholder="e.g. Carrara 4-Seater Marble Dining Ensemble" required>
+            <span class="form-hint">A clear, recognizable name that customers see on the shop page.</span>
+            <div class="form-error-msg" id="error-product-name"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="form-product-category">
+              Furniture Category <span class="req-star">*</span>
+            </label>
+            <select class="form-control" id="form-product-category"></select>
+            <span class="form-hint">Choose where this product belongs in your collection.</span>
+          </div>
+
+          <div class="form-group" id="form-custom-category-group" style="display: none;">
+            <label class="form-label" for="form-custom-category-name">
+              New Category Name <span class="req-star">*</span>
+            </label>
+            <input type="text" class="form-control" id="form-custom-category-name" placeholder="e.g. Wooden Sofas or Bar Stools">
+            <span class="form-hint">This will create a new category tab on your public shop page.</span>
+            <div class="form-error-msg" id="error-custom-category"></div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="form-product-price">
+                Selling Price (₹) <span class="req-star">*</span>
+              </label>
+              <input type="number" class="form-control" id="form-product-price" placeholder="e.g. 4200" min="1" step="1" required>
+              <span class="form-hint">The actual price the customer pays in Indian Rupees.</span>
+              <div class="form-error-msg" id="error-product-price"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-product-original-price">
+                Original / MRP Price (₹) <span style="font-weight: 400; color: var(--admin-text-light);">(Optional)</span>
+              </label>
+              <input type="number" class="form-control" id="form-product-original-price" placeholder="e.g. 5500" min="1" step="1">
+              <span class="form-hint">Higher than selling price to show a discount percentage.</span>
+              <div class="form-error-msg" id="error-product-orig-price"></div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="form-product-status">
+                Stock Availability
+              </label>
+              <select class="form-control" id="form-product-status">
+                <option value="In Stock">In Stock (Ready for Dispatch)</option>
+                <option value="Made to Order">Made to Order (Crafted upon request)</option>
+                <option value="Out of Stock">Out of Stock (Temporarily unavailable)</option>
+              </select>
+              <span class="form-hint">Controls the availability badge and ordering status.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-product-badge">
+                Promotional Badge <span style="font-weight: 400; color: var(--admin-text-light);">(Optional)</span>
+              </label>
+              <select class="form-control" id="form-product-badge"></select>
+              <span class="form-hint">Highlights this item with a tag (e.g. Bestseller, Signature).</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="form-product-desc">
+              Short Description
+            </label>
+            <textarea class="form-control" id="form-product-desc" rows="3" placeholder="e.g. Ergonomic mustard leatherette dining armchair with diamond quilting and matte black legs."></textarea>
+            <span class="form-hint">1&ndash;3 sentences describing the comfort, cushioning, steel/wood frame, or finish.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Product Photo <span class="req-star">*</span>
+            </label>
+            <div class="image-selector-box">
+              <div class="image-source-tabs">
+                <button class="img-tab-btn active" id="img-tab-gallery" type="button">
+                  Choose Workshop Photo (36 designs)
+                </button>
+                <button class="img-tab-btn" id="img-tab-upload" type="button">
+                  Upload Photo from Device
+                </button>
+                <button class="img-tab-btn" id="img-tab-url" type="button">
+                  Image Path / Link
+                </button>
+              </div>
+
+              <div id="img-panel-gallery">
+                <p style="font-size: 0.78rem; color: var(--admin-text-muted); margin-bottom: 8px;">
+                  Click any authentic workshop photo below to use it for this product:
+                </p>
+                <div class="workshop-gallery-grid" id="workshop-gallery-grid"></div>
+              </div>
+
+              <div id="img-panel-upload" style="display: none;">
+                <input type="file" id="form-file-input" accept="image/jpeg,image/png,image/webp" style="display: none;">
+                <div class="file-drop-area" id="file-drop-area">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                  <div class="file-drop-title">Click to choose a photo or drag it here</div>
+                  <div class="file-drop-sub">Supports JPG, PNG, and WEBP photos (Max 5MB)</div>
+                </div>
+                <div class="form-error-msg" id="error-image-upload" style="margin-top: 6px;"></div>
+              </div>
+
+              <div id="img-panel-url" style="display: none;">
+                <input type="text" class="form-control" id="form-custom-image-url" placeholder="assets/images/catalog/varsha-prod-01.jpg">
+                <span class="form-hint" style="margin-top: 6px; display: block;">Enter a relative file path or web image link.</span>
+              </div>
+
+              <div class="image-preview-panel">
+                <img class="preview-thumb-img" id="form-preview-thumb" src="assets/images/catalog/varsha-prod-01.jpg" alt="Selected Preview">
+                <div class="preview-meta">
+                  <div class="preview-status">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Photo Selected &amp; Ready</span>
+                  </div>
+                  <div class="preview-path" id="form-preview-path">assets/images/catalog/varsha-prod-01.jpg</div>
+                </div>
+              </div>
+
+              <input type="hidden" id="form-product-image" value="assets/images/catalog/varsha-prod-01.jpg">
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-outline-neutral" id="btn-cancel-product" type="button">Cancel</button>
+        <button class="btn-bronze" id="btn-save-product" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          Save Product
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 2: DELETE CONFIRMATION DIALOG
+       ====================================================================== -->
+  <div class="admin-modal-overlay" id="modal-delete-confirm">
+    <div class="admin-modal-dialog" style="max-width: 480px;">
+      <div class="modal-body" style="padding: 28px;">
+        <div class="dialog-danger-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+        </div>
+        <h2 style="font-family: var(--admin-font-heading); font-size: 1.25rem; color: var(--admin-primary); margin-bottom: 8px;">
+          Delete this product?
+        </h2>
+        <p style="font-size: 0.88rem; color: var(--admin-text-muted); line-height: 1.5;">
+          Are you sure you want to remove this furniture piece? It will be removed from your catalog and will no longer appear on your storefront.
+        </p>
+
+        <div class="dialog-product-preview-card" id="delete-modal-preview"></div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px;">
+          <button class="btn-outline-neutral" id="btn-cancel-delete" type="button">Cancel, Keep Product</button>
+          <button class="btn-danger-solid" id="btn-confirm-delete" type="button">Yes, Delete Product</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 3: UNSAVED CHANGES WARNING
+       ====================================================================== -->
+  <div class="admin-modal-overlay" id="modal-unsaved-warning">
+    <div class="admin-modal-dialog" style="max-width: 440px;">
+      <div class="modal-body" style="padding: 24px;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #FEF3C7; color: #B45309; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        </div>
+        <h3 style="font-family: var(--admin-font-heading); font-size: 1.15rem; color: var(--admin-primary); margin-bottom: 6px;">
+          Unsaved Changes
+        </h3>
+        <p style="font-size: 0.86rem; color: var(--admin-text-muted); line-height: 1.5; margin-bottom: 20px;">
+          You have made edits to this product form that have not been saved. If you leave now, your changes will be lost.
+        </p>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button class="btn-outline-neutral" id="btn-unsaved-keep" type="button">Keep Editing</button>
+          <button class="btn-danger-solid" id="btn-unsaved-discard" type="button">Discard Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 4: PUBLISH & EXPORT CATALOG FILE
+       ====================================================================== -->
+  <div class="admin-modal-overlay" id="modal-export-catalog">
+    <div class="admin-modal-dialog" style="max-width: 600px;">
+      <div class="modal-header">
+        <div class="modal-title-block">
+          <h2>Export &amp; Publish Catalog</h2>
+          <p>Permanently apply your updated product catalog to the live website.</p>
+        </div>
+        <button class="modal-close-btn" id="btn-close-export-modal" type="button" aria-label="Close dialog">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body" style="font-size: 0.88rem; color: var(--admin-text-main); line-height: 1.55;">
+        <p style="margin-bottom: 14px;">
+          Currently, all product additions and edits are saved in this computer's browser storage and appear on your storefront.
+        </p>
+        <div style="background-color: var(--admin-surface-soft); border: 1px solid var(--admin-border); border-radius: var(--admin-radius-md); padding: 16px; margin-bottom: 18px;">
+          <h4 style="font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--admin-primary);">
+            3 Simple Steps to Update the Live Website:
+          </h4>
+          <ol style="padding-left: 20px; font-size: 0.84rem; color: var(--admin-text-muted); display: flex; flex-direction: column; gap: 6px;">
+            <li>Click <strong>"Download products.js File"</strong> below.</li>
+            <li>Move the downloaded file into your website folder under <code>assets/js/</code>, replacing the existing file.</li>
+            <li>Your updated products are now permanently live for every website visitor!</li>
+          </ol>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button class="btn-bronze" id="btn-download-catalog-js" type="button" style="justify-content: center; padding: 12px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Download Updated "products.js" File
+          </button>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-outline-neutral" id="btn-copy-catalog-js" type="button" style="flex: 1; justify-content: center;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy Code to Clipboard
+            </button>
+            <button class="btn-outline-neutral" id="btn-download-catalog-json" type="button" style="flex: 1; justify-content: center;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              Download Backup (JSON)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 5: FACTORY RESET CONFIRMATION
+       ====================================================================== -->
+  <div class="admin-modal-overlay" id="modal-reset-confirm">
+    <div class="admin-modal-dialog" style="max-width: 460px;">
+      <div class="modal-body" style="padding: 24px;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #FEE2E2; color: #DC2626; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+        </div>
+        <h3 style="font-family: var(--admin-font-heading); font-size: 1.15rem; color: var(--admin-primary); margin-bottom: 6px;">
+          Restore Original 36 Products?
+        </h3>
+        <p style="font-size: 0.86rem; color: var(--admin-text-muted); line-height: 1.5; margin-bottom: 20px;">
+          This will reset your catalog back to the original 36 workshop designs. Any custom products or edits you created in this browser will be reverted.
+        </p>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button class="btn-outline-neutral" id="btn-cancel-reset" type="button">Cancel</button>
+          <button class="btn-danger-solid" id="btn-confirm-reset" type="button">Yes, Reset Catalog</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 6: CREATE DISCOUNT COUPON
+       ====================================================================== -->
+  <div class="admin-modal-overlay" id="modal-coupon-form">
+    <div class="admin-modal-dialog" style="max-width: 540px;">
+      <div class="modal-header">
+        <div class="modal-title-block">
+          <h2>Create New Discount Coupon</h2>
+          <p>Add a promotional voucher for customers and corporate clients.</p>
+        </div>
+        <button class="modal-close-btn" id="btn-close-coupon-modal" type="button" aria-label="Close dialog">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form class="form-grid" id="form-coupon" onsubmit="event.preventDefault();">
+          <div class="form-group">
+            <label class="form-label" for="form-coupon-code">
+              Coupon Code <span class="req-star">*</span>
+            </label>
+            <input type="text" class="form-control" id="form-coupon-code" placeholder="e.g. DIWALI15 or WORKSHOP20" style="text-transform: uppercase; font-family: monospace; font-weight: 600; letter-spacing: 0.05em;" required>
+            <span class="form-hint">The code customers will enter or quote during inquiry.</span>
+            <div class="form-error-msg" id="error-coupon-code"></div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="form-coupon-discount">
+                Discount Display <span class="req-star">*</span>
+              </label>
+              <input type="text" class="form-control" id="form-coupon-discount" placeholder="e.g. 15% OFF or ₹2,000 OFF" required>
+              <span class="form-hint">E.g., "10% OFF" or "₹1,500 Flat OFF".</span>
+              <div class="form-error-msg" id="error-coupon-discount"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-coupon-expiry">
+                Valid Until
+              </label>
+              <input type="date" class="form-control" id="form-coupon-expiry">
+              <span class="form-hint">Leave blank for no expiration.</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="form-coupon-desc">
+              Terms &amp; Description
+            </label>
+            <textarea class="form-control" id="form-coupon-desc" rows="2" placeholder="e.g. 15% off on marble dining sets and dining chairs above ₹25,000."></textarea>
+            <span class="form-hint">Short note explaining how or where this coupon can be used.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="form-coupon-status">Initial Status</label>
+            <select class="form-control" id="form-coupon-status">
+              <option value="Active">Active (Ready to use)</option>
+              <option value="Expired">Inactive / Draft</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-outline-neutral" id="btn-cancel-coupon" type="button">Cancel</button>
+        <button class="btn-bronze" id="btn-save-coupon" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline></svg>
+          Save Coupon
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 7: ADD CUSTOMER TESTIMONIAL / REVIEW
+       ====================================================================== -->
+  <div class="admin-modal-overlay" id="modal-review-form">
+    <div class="admin-modal-dialog" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="modal-title-block">
+          <h2>Add Customer Review</h2>
+          <p>Add a client testimonial or review to feature in your store.</p>
+        </div>
+        <button class="modal-close-btn" id="btn-close-review-modal" type="button" aria-label="Close dialog">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form class="form-grid" id="form-review" onsubmit="event.preventDefault();">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="form-review-author">
+                Customer Name <span class="req-star">*</span>
+              </label>
+              <input type="text" class="form-control" id="form-review-author" placeholder="e.g. Mehul Dave" required>
+              <div class="form-error-msg" id="error-review-author"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-review-city">
+                City / Location <span class="req-star">*</span>
+              </label>
+              <input type="text" class="form-control" id="form-review-city" placeholder="e.g. Ahmedabad, Gujarat" required>
+              <div class="form-error-msg" id="error-review-city"></div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="form-review-product">
+                Furniture Piece Reviewed <span class="req-star">*</span>
+              </label>
+              <select class="form-control" id="form-review-product">
+                <!-- Dynamically populated from products -->
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-review-rating">
+                Rating
+              </label>
+              <select class="form-control" id="form-review-rating">
+                <option value="5">★★★★★ (5 Stars - Exceptional)</option>
+                <option value="4">★★★★☆ (4 Stars - Very Good)</option>
+                <option value="3">★★★☆☆ (3 Stars - Average)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="form-review-text">
+              Review Testimonial <span class="req-star">*</span>
+            </label>
+            <textarea class="form-control" id="form-review-text" rows="3" placeholder="Describe customer feedback regarding furniture craftsmanship, comfort, delivery, or workshop pricing..." required></textarea>
+            <span class="form-hint">Direct quotes or feedback received on WhatsApp, phone, or workshop visits.</span>
+            <div class="form-error-msg" id="error-review-text"></div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-outline-neutral" id="btn-cancel-review" type="button">Cancel</button>
+        <button class="btn-bronze" id="btn-save-review" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline></svg>
+          Publish Review
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="admin-toast success" id="admin-toast">
+    <div id="admin-toast-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+    </div>
+    <div id="admin-toast-msg">Product successfully saved!</div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/admin.js"></script>
+  <script>
+    // Expose switchView helper
+    window.VF_ADMIN = {
+      switchView: function(viewName) {
+        const btn = document.querySelector(`.sidebar-btn[data-view="${viewName}"]`);
+        if (btn) btn.click();
+      }
+    };
+  </script>
+</body>
+</html>

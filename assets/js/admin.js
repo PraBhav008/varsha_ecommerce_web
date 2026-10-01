@@ -331,6 +331,64 @@
     return true;
   }
 
+  // Sync individual product changes with Cloudflare D1
+  async function syncProductToD1(productData, isEdit) {
+    try {
+      await fetch('/api/products', {
+        method: isEdit ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(productData)
+      });
+    } catch (e) {
+      console.warn('Could not sync product with D1 API:', e);
+    }
+  }
+
+  // Sync order status updates with Cloudflare D1
+  async function syncOrderStatusToD1(orderId, newStatus) {
+    try {
+      await fetch('/api/orders', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: orderId, status: newStatus })
+      });
+    } catch (e) {
+      console.warn('Could not sync order status with D1 API:', e);
+    }
+  }
+
+  // Fetch live products and orders from Cloudflare D1 on admin boot
+  async function loadAdminDataFromD1() {
+    try {
+      const res = await fetch('/api/products');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && Array.isArray(data.products) && data.products.length > 0) {
+          const mapped = data.products.map(p => ({
+            ...p,
+            originalPrice: p.original_price ?? p.originalPrice
+          }));
+          window.VARSHA_PRODUCTS = mapped;
+          localStorage.setItem('varsha_furniture_catalog', JSON.stringify(mapped));
+          renderCurrentView();
+          updateSidebarCounts();
+        }
+      }
+    } catch (e) {}
+
+    try {
+      const resOrders = await fetch('/api/orders');
+      if (resOrders.ok) {
+        const dataOrders = await resOrders.json();
+        if (dataOrders.success && Array.isArray(dataOrders.orders) && dataOrders.orders.length > 0) {
+          setStorageData('vf_orders_data', dataOrders.orders);
+          renderOrders();
+          renderDashboard();
+        }
+      }
+    } catch (e) {}
+  }
+
   function getOrders() {
     return getStorageData('vf_orders_data', INITIAL_ORDERS);
   }
@@ -1567,6 +1625,7 @@
     }
 
     saveCatalog(updatedCatalog);
+    syncProductToD1(productData, !!state.editingProductId);
     state.isFormDirty = false;
     closeProductModal(true);
     showToast(message, 'success');
@@ -1613,9 +1672,13 @@
     const catalog = getCatalog();
     const prod = catalog.find(p => p.id === productToDeleteId);
     const prodTitle = prod ? prod.title : 'Product';
+    const deletedId = productToDeleteId;
 
     const updatedCatalog = catalog.filter(p => p.id !== productToDeleteId);
     saveCatalog(updatedCatalog);
+
+    // Sync delete to Cloudflare D1
+    fetch(`/api/products?id=${encodeURIComponent(deletedId)}`, { method: 'DELETE' }).catch(() => {});
 
     closeDeleteConfirmModal();
     showToast(`"${prodTitle}" has been removed from your store.`, 'success');
@@ -2266,12 +2329,15 @@ if (typeof module !== "undefined") {
     });
   });
 
-  // Hash check
-  const urlHash = window.location.hash.replace(/^#/, '');
-  if (urlHash && VIEW_TITLES[urlHash]) {
-    switchView(urlHash);
-  }
-});
+    // Hash check
+    const urlHash = window.location.hash.replace(/^#/, '');
+    if (urlHash && VIEW_TITLES[urlHash]) {
+      switchView(urlHash);
+    }
+
+    // Live sync products and orders from Cloudflare D1
+    loadAdminDataFromD1();
+  });
 
 // Global API
 window.VF_ADMIN = {

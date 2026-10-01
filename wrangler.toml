@@ -1,0 +1,15 @@
+name = "varsha-furniture"
+main = "src/index.js" # or functions folder if using Cloudflare Pages
+compatibility_date = "2024-09-23"
+
+# Cloudflare D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "varsha-db"
+database_id = "1ba8d80f-443a-4530-907a-1aabe4cae813"
+migrations_dir = "migrations"                # Folder containing migration files
+
+# Optional: Cloudflare R2 bucket for furniture media assets
+# [[r2_buckets]]
+# binding = "IMAGES_BUCKET"
+# bucket_name = "varsha-furniture-assets"

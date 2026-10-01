@@ -1,5 +1,6 @@
 name = "varsha-ecommerce-web"
 pages_build_output_dir = "."
+
 compatibility_date = "2026-10-01"
 
 [[d1_databases]]

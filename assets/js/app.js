@@ -93,7 +93,7 @@
     card.innerHTML = `
       <div class="card-media" onclick="window.VF.openModal('${product.id}')">
         ${badgeHtml}
-        <img src="${product.image}" alt="${product.title}" loading="lazy" onerror="this.src='assets/images/catalog/varsha-prod-01.jpg'">
+        <img src="${product.image}" alt="${product.title}" loading="lazy" width="300" height="300" decoding="async" onerror="this.src='assets/images/catalog/varsha-prod-01.jpg'">
         <div class="card-quick-actions">
           <button class="btn-card-quick" type="button" onclick="event.stopPropagation(); window.VF.openModal('${product.id}')">
             Quick View

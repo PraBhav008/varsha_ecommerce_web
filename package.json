@@ -1,0 +1,19 @@
+{
+  "name": "varsha-furniture",
+  "version": "1.0.0",
+  "description": "Varsha Furniture - Handcrafted Furniture Ahmedabad & Cloudflare D1 Backend",
+  "scripts": {
+    "dev": "wrangler pages dev . --d1 DB=1ba8d80f-443a-4530-907a-1aabe4cae813",
+    "dev:remote": "wrangler pages dev . --d1 DB=1ba8d80f-443a-4530-907a-1aabe4cae813 --remote",
+    "deploy": "wrangler pages deploy . --project-name=varsha-ecommerce-web",
+    "db:migrate:local": "wrangler d1 migrations apply varsha-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply varsha-db --remote",
+    "db:seed:local": "wrangler d1 execute varsha-db --local --file=./migrations/0011_seed_initial_data.sql",
+    "db:seed:remote": "wrangler d1 execute varsha-db --remote --file=./migrations/0011_seed_initial_data.sql",
+    "db:count:local": "wrangler d1 execute varsha-db --local --command=\"SELECT (SELECT COUNT(*) FROM products) as products, (SELECT COUNT(*) FROM categories) as categories, (SELECT COUNT(*) FROM orders) as orders;\"",
+    "db:count:remote": "wrangler d1 execute varsha-db --remote --command=\"SELECT (SELECT COUNT(*) FROM products) as products, (SELECT COUNT(*) FROM categories) as categories, (SELECT COUNT(*) FROM orders) as orders;\""
+  },
+  "devDependencies": {
+    "wrangler": "^4.145.0"
+  }
+}

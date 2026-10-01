@@ -22,8 +22,8 @@ All migration files are located in the [`migrations/`](file:///c:/Users/Bhavsar%
 | [`0009_media_assets.sql`](file:///c:/Users/Bhavsar%20Prathmesh/OneDrive/Documents/Projects/varsha_furniture_demo/migrations/0009_media_assets.sql) | Catalog photo assets metadata (36 authentic photos), file paths, dimensions, and categories |
 | [`0010_admin_users.sql`](file:///c:/Users/Bhavsar%20Prathmesh/OneDrive/Documents/Projects/varsha_furniture_demo/migrations/0010_admin_users.sql) | Admin dashboard authentication, role permissions, and active session tokens |
 | [`0011_seed_initial_data.sql`](file:///c:/Users/Bhavsar%20Prathmesh/OneDrive/Documents/Projects/varsha_furniture_demo/migrations/0011_seed_initial_data.sql) | Complete authentic initial seed data (all 36 products, orders, customers, reviews, coupons, SEO) |
-| [`schema_complete.sql`](file:///c:/Users/Bhavsar%20Prathmesh/OneDrive/Documents/Projects/varsha_furniture_demo/migrations/schema_complete.sql) | Consolidated single-file schema containing all tables, indexes, constraints, and triggers |
-| [`queries_reference.sql`](file:///c:/Users/Bhavsar%20Prathmesh/OneDrive/Documents/Projects/varsha_furniture_demo/migrations/queries_reference.sql) | Ready-to-use parameterized SQL queries for Workers / Pages (filtering, search, orders, stats) |
+| [`schema_complete.sql`](file:///c:/Users/Bhavsar%20Prathmesh/OneDrive/Documents/Projects/varsha_furniture_demo/database/schema_complete.sql) | Consolidated single-file schema containing all tables, indexes, constraints, and triggers |
+| [`queries_reference.sql`](file:///c:/Users/Bhavsar%20Prathmesh/OneDrive/Documents/Projects/varsha_furniture_demo/database/queries_reference.sql) | Ready-to-use parameterized SQL queries for Workers / Pages (filtering, search, orders, stats) |
 
 ---
 
@@ -75,7 +75,7 @@ If you prefer to execute the full schema directly in a single pass:
 
 1. **Apply entire schema:**
    ```bash
-   npx wrangler d1 execute varsha_furniture_prod --remote --file=./migrations/schema_complete.sql
+   npx wrangler d1 execute varsha_furniture_prod --remote --file=./database/schema_complete.sql
    ```
 
 2. **Seed all 36 authentic catalog items & initial data:**
@@ -124,4 +124,4 @@ export async function onRequestGet(context) {
   });
 }
 ```
-Refer to [`migrations/queries_reference.sql`](file:///c:/Users/Bhavsar%20Prathmesh/OneDrive/Documents/Projects/varsha_furniture_demo/migrations/queries_reference.sql) for all other prepared queries!
+Refer to [`database/queries_reference.sql`](file:///c:/Users/Bhavsar%20Prathmesh/OneDrive/Documents/Projects/varsha_furniture_demo/database/queries_reference.sql) for all other prepared queries!

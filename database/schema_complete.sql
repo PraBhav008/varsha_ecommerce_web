@@ -2,7 +2,7 @@
 -- VARSHA FURNITURE - COMPLETE CLOUDFLARE D1 DATABASE SCHEMA & SEED DATA
 -- Platform: Cloudflare D1 (SQLite)
 -- Single-file deployment option:
---   wrangler d1 execute <DB_NAME> --file=./migrations/schema_complete.sql
+--   wrangler d1 execute <DB_NAME> --file=./database/schema_complete.sql
 -- ============================================================================
 
 PRAGMA foreign_keys = ON;

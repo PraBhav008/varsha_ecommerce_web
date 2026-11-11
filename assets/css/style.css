@@ -516,13 +516,14 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  --hero-bg-image: url('../image/Boucle Armchair on a Wildflower Hill.png');
   background-image:
     linear-gradient(180deg,
       rgba(0, 0, 0, 0.15) 0%,
       rgba(0, 0, 0, 0) 30%,
       rgba(0, 0, 0, 0) 65%,
       rgba(74, 87, 89, 0.28) 100%),
-    url('../image/Boucle Armchair on a Wildflower Hill.png');
+    var(--hero-bg-image);
   background-position: center bottom;
   background-size: cover;
   background-repeat: no-repeat;
@@ -2549,6 +2550,7 @@ button {
   }
   .hero-bg {
     padding: 124px 16px 56px;
+    --hero-bg-image: url('../image/Boucle Chair Amidst Wildflowers for mobile phones.png');
   }
   .hero-bottom-spacer {
     height: 150px;
@@ -2643,5 +2645,12 @@ button {
   .cookie-banner {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+/* Mobile landscape & touch-phone fallback for portrait hero background */
+@media (hover: none) and (pointer: coarse) and (max-width: 920px) {
+  .hero-bg {
+    --hero-bg-image: url('../image/Boucle Chair Amidst Wildflowers for mobile phones.png');
   }
 }

@@ -59,8 +59,9 @@
   }
   </script>
 
-  <!-- Preload Critical LCP Hero Background -->
-  <link rel="preload" as="image" href="assets/image/Boucle Armchair on a Wildflower Hill.png" fetchpriority="high">
+  <!-- Preload Critical LCP Hero Background (Desktop & Mobile) -->
+  <link rel="preload" as="image" href="assets/image/Boucle Armchair on a Wildflower Hill.png" media="(min-width: 769px)" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image/Boucle Chair Amidst Wildflowers for mobile phones.png" media="(max-width: 768px)" fetchpriority="high">
 
   <!-- Typography: Playfair Display (Headings) + DM Sans (Body) + Cinzel (Brand) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,7 +73,7 @@
   </noscript>
 
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css?v=20261111d">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261111e">
 </head>
 <body>
 
@@ -1144,7 +1145,7 @@
   </footer>
 
   <!-- Scripts (Deferred for optimal performance) -->
-  <script src="assets/js/products.js?v=20261111d" defer></script>
-  <script src="assets/js/app.js?v=20261111d" defer></script>
+  <script src="assets/js/products.js?v=20261111e" defer></script>
+  <script src="assets/js/app.js?v=20261111e" defer></script>
 </body>
 </html>

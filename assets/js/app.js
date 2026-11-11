@@ -10,6 +10,7 @@
   const state = {
     cart: JSON.parse(localStorage.getItem('vf_cart') || '[]'),
     activeCategory: 'All',
+    activeRoute: 'home',
     searchQuery: '',
     currentModalProduct: null
   };
@@ -85,7 +86,7 @@
     const isOutOfStock = product.status === 'Out of Stock';
     let badgeHtml = '';
     if (isOutOfStock) {
-      badgeHtml = `<span class="card-badge" style="background-color: #7A271A; color: #FFF;">Out of Stock</span>`;
+      badgeHtml = `<span class="card-badge">Out of Stock</span>`;
     } else if (product.badge) {
       badgeHtml = `<span class="card-badge">${product.badge}</span>`;
     }
@@ -103,7 +104,7 @@
       <div class="card-content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
           <span class="card-category">${product.category}</span>
-          ${product.status && product.status !== 'In Stock' ? `<span style="font-size: 0.72rem; color: #B45309; font-weight: 500;">${product.status}</span>` : ''}
+          ${product.status && product.status !== 'In Stock' ? `<span style="font-size: 0.72rem; color: #4A5759; font-weight: 600;">${product.status}</span>` : ''}
         </div>
         <h4 class="card-title" onclick="window.VF.openModal('${product.id}')">${product.title}</h4>
         <div class="card-footer">
@@ -349,13 +350,34 @@
     document.body.style.overflow = '';
   }
 
+  // ---------------- Header Transparency & Scroll State ----------------
+  function updateHeaderState() {
+    const header = document.getElementById('main-header') || document.querySelector('.site-header');
+    if (!header) return;
+    const isTransparentAllowed = state.activeRoute === 'home' && window.scrollY <= 40;
+    if (isTransparentAllowed) {
+      header.classList.add('navbar-transparent');
+      header.classList.remove('navbar-scrolled');
+    } else {
+      header.classList.remove('navbar-transparent');
+      header.classList.add('navbar-scrolled');
+    }
+  }
+
   // ---------------- SPA Router ----------------
   let isInternalNav = false;
+  const LANDING_SECTIONS = ['hero', 'collections', 'why-varsha', 'featured', 'craft', 'reviews', 'quote-section'];
 
-  function navigateTo(route) {
+  function navigateTo(route, options = {}) {
     const cleanRoute = (route || 'home').replace(/^#/, '');
+    if (LANDING_SECTIONS.includes(cleanRoute)) {
+      scrollToSection(cleanRoute);
+      return;
+    }
+
     const validRoutes = ['home', 'shop', 'about', 'contact', 'faqs', 'terms', 'privacy'];
     const activeRoute = validRoutes.includes(cleanRoute) ? cleanRoute : 'home';
+    state.activeRoute = activeRoute;
 
     // Hide all page views
     document.querySelectorAll('.page-view').forEach(view => {
@@ -381,8 +403,13 @@
     // Close mobile nav if open
     if (elements.mobileNav) elements.mobileNav.classList.remove('open');
 
-    // Scroll smoothly to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Sync header transparent/scrolled state
+    updateHeaderState();
+
+    // Scroll smoothly to top unless caller handles scrolling
+    if (!options.skipScroll) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     // Only sync URL history if running on a web server (prevents Chromium file:// frame origin security warning)
     if (window.location.protocol !== 'file:' && window.location.hash !== `#${activeRoute}`) {
@@ -391,6 +418,21 @@
       } catch (err) {
         // Silently ignored if blocked by sandbox
       }
+    }
+  }
+
+  function scrollToSection(sectionId) {
+    if (state.activeRoute !== 'home') {
+      navigateTo('home', { skipScroll: true });
+    } else if (elements.mobileNav) {
+      elements.mobileNav.classList.remove('open');
+    }
+
+    const target = document.getElementById(sectionId);
+    if (target) {
+      requestAnimationFrame(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     }
   }
 
@@ -497,14 +539,8 @@
     }
 
     // Header scroll blur effect
-    const header = document.querySelector('.site-header');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
-    });
+    window.addEventListener('scroll', updateHeaderState, { passive: true });
+    updateHeaderState();
 
     // Category tabs click
     document.querySelectorAll('.category-tab').forEach(tab => {
@@ -599,12 +635,70 @@
       });
     }
 
-    // Search bar listener if exists
+    // Quote form submit on landing page -> Save to Cloudflare D1
+    const quoteForm = document.getElementById('quote-form');
+    if (quoteForm) {
+      quoteForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('quote-name')?.value || '';
+        const phone = document.getElementById('quote-phone')?.value || '';
+        const category = document.getElementById('quote-category')?.value || 'Custom Quote';
+        const finish = document.getElementById('quote-finish')?.value || '';
+        const message = document.getElementById('quote-message')?.value || '';
+        const subject = finish ? `${category} — ${finish}` : category;
+
+        try {
+          await fetch('/api/inquiries', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, phone, subject, message, inquiryType: 'Custom Quote' })
+          });
+        } catch (err) {
+          // Graceful fallback
+        }
+
+        showToast('Thank you! Your quote request has been sent to our workshop.');
+        quoteForm.reset();
+      });
+    }
+
+    // Search bar listener (catalog & frosted header search)
     const searchInput = document.getElementById('catalog-search-input');
+    const headerSearchInput = document.getElementById('header-search-input');
+
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         state.searchQuery = e.target.value;
+        if (headerSearchInput && headerSearchInput.value !== e.target.value) {
+          headerSearchInput.value = e.target.value;
+        }
         renderCatalog();
+      });
+    }
+
+    if (headerSearchInput) {
+      const handleHeaderSearch = (value, openShop) => {
+        state.searchQuery = value;
+        if (searchInput && searchInput.value !== value) {
+          searchInput.value = value;
+        }
+        if (openShop && state.activeRoute !== 'shop') {
+          navigateTo('shop');
+        }
+        renderCatalog();
+      };
+      headerSearchInput.addEventListener('input', (e) => {
+        if (e.target.value.trim() !== '') {
+          handleHeaderSearch(e.target.value, true);
+        } else {
+          handleHeaderSearch('', false);
+        }
+      });
+      headerSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleHeaderSearch(e.target.value, true);
+        }
       });
     }
   });
@@ -619,6 +713,7 @@
     openModal,
     closeModal,
     navigateTo,
+    scrollToSection,
     filterCategory,
     acceptCookies,
     declineCookies,
